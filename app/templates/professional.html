@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face {
+  font-family: 'Inter';
+  src: url('{{ font_dir }}/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 400; font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('{{ font_dir }}/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 700; font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('{{ font_dir }}/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 900; font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('{{ font_dir }}/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 400; font-style: italic;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('{{ font_dir }}/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 700; font-style: italic;
+}
+@page { size: A4; margin: 2cm 1.8cm; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+body { font-size: 10pt; color: #1f2937; }
+
+.header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+.header-left img { max-height: 60px; max-width: 160px; display: block; margin-bottom: 10px; }
+.biz-name { font-size: 13pt; font-weight: bold; color: #111827; margin-bottom: 4px; }
+.biz-detail { font-size: 9pt; color: #6b7280; line-height: 1.7; }
+
+.meta-box {
+  background: {{ accent_light }};
+  border-left: 4px solid {{ accent }};
+  border-radius: 0 4px 4px 0;
+  padding: 14px 20px; min-width: 200px; text-align: right;
+}
+.meta-box .inv-label { font-size: 8pt; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+.meta-box .inv-num { font-size: 14pt; font-weight: 900; color: {{ accent }}; margin-bottom: 10px; }
+.meta-box .date-row { font-size: 8.5pt; color: #374151; line-height: 1.8; }
+.meta-box .date-row span { color: {{ accent }}; font-weight: bold; }
+
+hr { border: none; border-top: 2px solid {{ accent }}; margin: 0 0 24px; }
+
+.bill-section { display: flex; margin-bottom: 28px; }
+.bill-box {
+  flex: 1; background: #f8fafc; border: 1px solid #e2e8f0;
+  border-radius: 6px; padding: 14px 18px; margin-right: 16px;
+}
+.bill-box .lbl {
+  font-size: 7.5pt; font-weight: bold; color: {{ accent }};
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+}
+.bill-box p { font-size: 9.5pt; line-height: 1.7; color: #374151; }
+
+.summary-box {
+  width: 180px; background: {{ accent }}; border-radius: 6px;
+  padding: 14px 18px; color: {{ accent_text }};
+  text-align: center;
+}
+.summary-box .lbl { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 1px; opacity: .75; margin-bottom: 6px; }
+.summary-box .total { font-size: 18pt; font-weight: 900; line-height: 1.1; }
+.summary-box .cur { font-size: 8pt; opacity: .75; margin-top: 4px; }
+
+table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+thead th {
+  background: {{ accent }}; color: {{ accent_text }};
+  padding: 9px 11px; text-align: left; font-size: 8.5pt;
+  font-weight: bold; text-transform: uppercase; letter-spacing: .5px;
+}
+thead th.r { text-align: right; }
+thead th.c { text-align: center; }
+tbody tr:nth-child(odd) { background: #ffffff; }
+tbody tr:nth-child(even) { background: #f8fafc; }
+tbody td { padding: 8px 11px; font-size: 9.5pt; border-bottom: 1px solid #e2e8f0; }
+tbody td.r { text-align: right; }
+tbody td.c { text-align: center; }
+
+.totals-wrap { text-align: right; margin-bottom: 28px; }
+.totals { display: inline-block; width: 240px; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; text-align: left; }
+.totals .row {
+  display: flex; justify-content: space-between;
+  padding: 7px 14px; font-size: 9pt; color: #6b7280; border-bottom: 1px solid #f1f5f9;
+}
+.totals .grand {
+  display: flex; justify-content: space-between;
+  padding: 10px 14px; background: {{ accent }}; color: {{ accent_text }};
+  font-size: 11.5pt; font-weight: bold;
+}
+
+.notes { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px 18px; }
+.notes .lbl {
+  font-size: 7.5pt; font-weight: bold; color: {{ accent }};
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+}
+.notes .notes-body { font-size: 9.5pt; color: #374151; line-height: 1.6; }
+
+.inv-footer { border-top: 1px solid #e5e7eb; margin-top: 28px; padding-top: 14px; }
+.inv-footer-split { display: flex; align-items: stretch; min-height: 80px; }
+.inv-footer-left { flex: 1; padding: 6px 16px; text-align: center; }
+.inv-footer-divider { width: 1px; background: #e5e7eb; margin: 0 4px; }
+.inv-footer-right { flex: 1; padding: 6px 16px; text-align: center; }
+.inv-footer-centered { text-align: center; padding: 6px 0; }
+.inv-footer-details { font-size: 8.5pt; color: #6b7280; line-height: 1.8; }
+.inv-footer-details strong { color: #374151; font-size: 9pt; }
+.inv-footer-terms { font-size: 8pt; color: #9ca3af; margin-top: 3px; }
+.inv-footer-qr-label { font-size: 8.5pt; font-weight: bold; color: #374151; margin-bottom: 3px; }
+.inv-footer-qr-url { font-size: 7.5pt; color: #9ca3af; word-break: break-all; max-width: 110px; }
+.inv-footer-qr-img { width: 125px; height: 125px; border-radius: 4px; border: 1px solid black; display: block; margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    {% if logo_src %}<img src="{{ logo_src }}" alt="Logo">{% endif %}
+    <div class="biz-name">{{ business_name }}</div>
+    <div class="biz-detail">
+      {{ business_address|safe }}<br>
+      {{ business_city }}, {{ business_state }}, {{ business_zip }}<br>
+      {{ business_phone }}<br>
+      {{ business_email }}
+    </div>
+  </div>
+  <div class="meta-box">
+    <div class="inv-label">Invoice</div>
+    <div class="inv-num">{{ invoice_number }}</div>
+    <div class="date-row">
+      Issued: <span>{{ issue_date }}</span><br>
+      Due: <span style="color:red;">{{ due_date }}</span>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="bill-section">
+  <div class="bill-box">
+    <div class="lbl">Bill To</div>
+    <p><strong>{{ client_name }}</strong><br>
+    {{ client_address|safe }}<br>
+    {{ client_city }}, {{ client_state }}, {{ client_zip }}<br>
+    {{ client_phone }}<br>
+    {{ client_email }}</p>
+  </div>
+  <div class="summary-box">
+    <div class="lbl">Amount Due</div>
+    <div class="total">{{ currency_symbol }}{{ "%.2f"|format(grand_total) }}</div>
+    <div class="cur">{{ currency }} &bull; Due {{ due_date }}</div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th class="c">Qty</th>
+      <th class="r">Unit Price</th>
+      <th class="r">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.description }}</td>
+      <td class="c">{{ item.qty }}</td>
+      <td class="r">{{ currency_symbol }}{{ "%.2f"|format(item.unit_price) }}</td>
+      <td class="r">{{ currency_symbol }}{{ "%.2f"|format(item.total) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="totals-wrap">
+  <div class="totals">
+    <div class="row"><span>Subtotal</span><span>{{ currency_symbol }}{{ "%.2f"|format(subtotal) }}</span></div>
+    {% if tax_rate > 0 %}
+    <div class="row"><span>{{ tax_label }} ({{ tax_rate }}%)</span><span>{{ currency_symbol }}{{ "%.2f"|format(tax_amount) }}</span></div>
+    {% endif %}
+    {% if discount > 0 %}
+    <div class="row"><span>Discount</span><span>-{{ currency_symbol }}{{ "%.2f"|format(discount) }}</span></div>
+    {% endif %}
+    <div class="grand">
+      <span>Total Due</span>
+      <span>{{ currency_symbol }}{{ "%.2f"|format(grand_total) }}</span>
+    </div>
+  </div>
+</div>
+
+{% if notes %}
+<div class="notes">
+  <div class="lbl">Notes</div>
+  <div class="notes-body">{{ notes|safe }}</div>
+</div>
+{% endif %}
+
+{% if qr_src %}
+<div class="inv-footer">
+  <div class="inv-footer-split">
+    <div class="inv-footer-left">
+      <div class="inv-footer-details">
+        <strong>{{ business_name }}</strong><br>
+        {% if business_email %}{{ business_email }}{% endif %}
+        {% if business_phone %} &bull; {{ business_phone }}{% endif %}
+        {% if payment_terms %}<div class="inv-footer-terms">{{ payment_terms }}</div>{% endif %}
+      </div>
+    </div>
+    <div class="inv-footer-divider"></div>
+    <div class="inv-footer-right">
+      <div class="inv-footer-qr-label">Scan to Pay</div>
+      <img src="{{ qr_src }}" alt="Pay" class="inv-footer-qr-img" width="125" height="125">
+      <div class="inv-footer-qr-url" style="width:125px; margin:4px auto 0; text-align:center;">{{ payment_link }}</div>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="inv-footer">
+  <div class="inv-footer-centered inv-footer-details">
+    <strong>{{ business_name }}</strong>
+    {% if business_email %} &bull; {{ business_email }}{% endif %}
+    {% if business_phone %} &bull; {{ business_phone }}{% endif %}
+    {% if payment_terms %}<div class="inv-footer-terms">{{ payment_terms }}</div>{% endif %}
+  </div>
+</div>
+{% endif %}
+
+</body>
+</html>

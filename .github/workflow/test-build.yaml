@@ -1,0 +1,14 @@
+name: Test EXE
+on: [push]
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Upload and test EXE
+        run: |
+          # Copy your built EXE here and run it headlessly
+          dir dist\OfflineInvoice\
+          .\dist\OfflineInvoice\OfflineInvoice.exe --version

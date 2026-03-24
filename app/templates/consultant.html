@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face {
+  font-family: 'Inter';
+  src: url('{{ font_dir }}/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 400; font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('{{ font_dir }}/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 700; font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('{{ font_dir }}/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 900; font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('{{ font_dir }}/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 400; font-style: italic;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('{{ font_dir }}/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 700; font-style: italic;
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+body { font-size: 10pt; color: #1f2937; display: flex; min-height: 297mm; }
+
+.sidebar {
+  width: 68mm; min-height: 297mm;
+  background: {{ accent }};
+  color: {{ accent_text }};
+  padding: 36px 20px 28px; flex-shrink: 0;
+}
+.sidebar img { max-width: 100%; max-height: 52px; margin-bottom: 16px; display: block; }
+.sidebar .biz-name { font-size: 11pt; font-weight: bold; margin-bottom: 8px; line-height: 1.3; }
+.sidebar .biz-detail { font-size: 8pt; opacity: .8; line-height: 1.7; margin-bottom: 24px; }
+.sidebar .meta-block { margin-top: 32px; }
+.sidebar .meta-item { margin-bottom: 16px; }
+.sidebar .meta-lbl { font-size: 7pt; text-transform: uppercase; letter-spacing: 1px; opacity: .65; margin-bottom: 3px; }
+.sidebar .meta-val { font-size: 9.5pt; font-weight: bold; }
+
+.sidebar-qr { margin-top: 28px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.25); text-align: center; }
+.sidebar-qr .qr-img-wrap { width: 125px; height: 125px; margin: 0 auto 6px; overflow: hidden; }
+.sidebar-qr .qr-img-wrap img { display: block; width: 125px; height: 125px; border-radius: 6px; border: 1px solid black; }
+.sidebar-qr .qr-lbl { font-size: 8pt; font-weight: bold; opacity: .9; margin-bottom: 6px; }
+.sidebar-qr .qr-url { font-size: 7pt; opacity: .65; word-break: break-all; }
+
+.main { flex: 1; padding: 40px 36px 28px; }
+.main h1 { font-size: 28pt; font-weight: 900; color: #111827; letter-spacing: 2px; margin-bottom: 28px; }
+
+.bill-lbl { font-size: 8pt; font-weight: bold; color: {{ accent }}; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.bill-to { font-size: 9.5pt; line-height: 1.7; color: #374151; margin-bottom: 28px; }
+
+table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+thead th { background: {{ accent }}; color: {{ accent_text }}; padding: 8px 9px; text-align: left; font-size: 8.5pt; }
+thead th.r { text-align: right; }
+thead th.c { text-align: center; }
+tbody tr:nth-child(even) { background: {{ accent_light }}; }
+tbody td { padding: 7px 9px; font-size: 9pt; border-bottom: 1px solid #e5e7eb; }
+tbody td.r { text-align: right; }
+tbody td.c { text-align: center; }
+
+.totals-wrap { text-align: right; margin: 8px 0 24px; }
+.totals { display: inline-block; width: 200px; text-align: left; }
+.totals .row { display: flex; justify-content: space-between; padding: 3px 0; font-size: 9pt; color: #6b7280; }
+.totals .grand {
+  background: {{ accent_dark }}; color: {{ accent_text }};
+  border-radius: 6px; padding: 9px 11px; margin-top: 8px;
+  display: flex; justify-content: space-between;
+  font-size: 11pt; font-weight: bold;
+}
+
+.notes-lbl { font-size: 8pt; font-weight: bold; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.notes-body { font-size: 9.5pt; color: #374151; line-height: 1.6; }
+
+.main-footer {
+  border-top: 1px solid #e5e7eb; margin-top: 28px; padding: 14px 0 16px;
+  text-align: center; font-size: 8.5pt; color: #6b7280; line-height: 1.8;
+}
+.main-footer strong { color: #374151; font-size: 9pt; }
+.main-footer .terms { font-size: 8pt; color: #9ca3af; margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  {% if logo_src %}<img src="{{ logo_src }}" alt="Logo">{% endif %}
+  <div class="biz-name">{{ business_name }}</div>
+  <div class="biz-detail">
+    {{ business_address|safe }}<br>
+    {{ business_city }}, {{ business_state }}, {{ business_zip }}<br>
+    {{ business_phone }}<br>
+    {{ business_email }}
+  </div>
+  <div class="meta-block">
+    <div class="meta-item">
+      <div class="meta-lbl">Invoice #</div>
+      <div class="meta-val">{{ invoice_number }}</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-lbl">Issue Date</div>
+      <div class="meta-val">{{ issue_date }}</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-lbl">Due Date</div>
+      <div class="meta-val">{{ due_date }}</div>
+    </div>
+  </div>
+  {% if qr_src %}
+  <div class="sidebar-qr">
+    <div class="qr-lbl">Scan to Pay</div>
+    <table style="width:100%; border-collapse:collapse; margin-bottom:6px;"><tr><td style="padding:0; line-height:0; text-align:center;">
+      <img src="{{ qr_src }}" alt="QR"
+           width="125" height="125"
+           style="display:inline-block; width:125px !important; height:125px !important; min-width:125px; min-height:125px; max-width:125px; max-height:125px; border-radius:6px; border:1px solid black;">
+    </td></tr></table>
+    <div class="qr-url">{{ payment_link }}</div>
+  </div>
+  {% endif %}
+</div>
+
+<div class="main">
+  <h1>INVOICE</h1>
+  <div class="bill-lbl">Bill To</div>
+  <div class="bill-to">
+    <strong>{{ client_name }}</strong><br>
+    {{ client_address|safe }}<br>
+    {{ client_city }}, {{ client_state }}, {{ client_zip }}<br>
+    {{ client_phone }}<br>
+    {{ client_email }}
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th><th class="c">Qty</th>
+        <th class="r">Unit Price</th><th class="r">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.description }}</td>
+        <td class="c">{{ item.qty }}</td>
+        <td class="r">{{ currency_symbol }}{{ "%.2f"|format(item.unit_price) }}</td>
+        <td class="r">{{ currency_symbol }}{{ "%.2f"|format(item.total) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="totals-wrap">
+    <div class="totals">
+      <div class="row"><span>Subtotal</span><span>{{ currency_symbol }}{{ "%.2f"|format(subtotal) }}</span></div>
+      {% if tax_rate > 0 %}
+      <div class="row"><span>{{ tax_label }} ({{ tax_rate }}%)</span><span>{{ currency_symbol }}{{ "%.2f"|format(tax_amount) }}</span></div>
+      {% endif %}
+      {% if discount > 0 %}
+      <div class="row"><span>Discount</span><span>-{{ currency_symbol }}{{ "%.2f"|format(discount) }}</span></div>
+      {% endif %}
+      <div class="grand">
+        <span>Total Due</span><span>{{ currency_symbol }}{{ "%.2f"|format(grand_total) }}</span>
+      </div>
+    </div>
+  </div>
+
+  {% if notes %}
+  <div class="notes-lbl">Notes</div>
+  <div class="notes-body">{{ notes|safe }}</div>
+  {% endif %}
+
+  <div class="main-footer">
+    <strong>{{ business_name }}</strong>
+    {% if business_email %} &bull; {{ business_email }}{% endif %}
+    {% if business_phone %} &bull; {{ business_phone }}{% endif %}
+    {% if payment_terms %}<div class="terms">{{ payment_terms }}</div>{% endif %}
+  </div>
+</div>
+
+</body>
+</html>
